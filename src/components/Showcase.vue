@@ -1,7 +1,7 @@
 <template>
   <div class="showcase_Wrapper">
     <div class="showcase">
-
+      <CharacterCard :characters="characters"></CharacterCard>
     </div>
   </div>
 </template>

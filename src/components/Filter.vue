@@ -9,18 +9,31 @@
       </svg>
     </div>
     <label for="sort-by-name">Find by name</label>
-    <input name="name" id="sort-by-name" placeholder="Please choose a name"></input>
+    <input v-model="name" name="name" id="sort-by-name" placeholder="Please choose a name"></input>
     <label for="sort-by-status">Sort by status</label>
-    <select name="status" id="sort-by-status">
+    <select v-model="status" name="status" id="sort-by-status">
       <option value="" disabled>Please choose a status</option>
       <option value="alive">Alive</option>
       <option value="dead">Dead</option>
     </select>
-    <button>Apply</button>
+    <button @click="applyFilter">Apply</button>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+const emit = defineEmits(['filter-changed'])
+const name = ref('')
+const status = ref('')
+
+function applyFilter() {
+  const filterObj = ({
+    name: name.value,
+    status: status.value
+  })
+  emit('filter-changed', filterObj)
+}
 
 </script>
 

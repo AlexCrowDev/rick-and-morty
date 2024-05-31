@@ -1,12 +1,28 @@
 <template>
-  <Filter></Filter>
-  <Showcase></Showcase>
+<Filter @filter-changed="onFilterChanged"></Filter>
+<Showcase :characters="data"></Showcase>
 </template>
 
 <script setup>
 import Filter from '@/components/Filter.vue'
 import Showcase from '@/components/Showcase.vue'
+import useCharacterService from '@/compositions/useCharacterService'
+import { ref } from 'vue'
 
+const characterService = useCharacterService()
+
+const data = ref([])
+
+loadData()
+
+async function loadData(filter) {
+  const newData = await characterService.getCharacters(filter?.name, filter?.status)
+  data.value = newData
+}
+
+function onFilterChanged(filter) {
+  loadData(filter)
+}
 </script>
 
 <style>
