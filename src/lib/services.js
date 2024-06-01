@@ -5,8 +5,8 @@ export default class CharacterService {
     this.apiClient = apiClient
   }
 
-  async getCharacters(name, status) {
-    const charactersResp = await this.apiClient.getCharacters(name, status)
+  async getCharacters(name, status, page) {
+    const charactersResp = await this.apiClient.getCharacters(name, status, page)
     
     for (let character of charactersResp.results) {
       if (character.episode) {
@@ -16,6 +16,6 @@ export default class CharacterService {
       }
     }
     
-    return charactersResp.results
+    return charactersResp
   }
 }

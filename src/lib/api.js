@@ -16,13 +16,14 @@ export default class ApiClient {
     return await resp.json()
   }
 
-  async getCharacters(name, status) {
+  async getCharacters(name, status, page) {
     let url = this.server + '/api/character/?'
 
     const params = new URLSearchParams()
-
+    
     if (name) params.append('name', name)
     if (status) params.append('status', status)
+    if (page) params.append('page', page)
 
     url += params.toString()
     return this.get(url)

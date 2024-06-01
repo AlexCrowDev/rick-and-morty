@@ -1,28 +1,49 @@
 <template>
-<Filter @filter-changed="onFilterChanged"></Filter>
-<Showcase :characters="data"></Showcase>
+<Filter @filter-changed="onFilterChanged"/>
+<Showcase :characters="data.results"/>
+<PageButtons @previus-page="onPreviousPage" @next-page="onNextPage"/>
 </template>
 
 <script setup>
 import Filter from '@/components/Filter.vue'
 import Showcase from '@/components/Showcase.vue'
+import PageButtons from "@/components/PageButtons";
 import useCharacterService from '@/compositions/useCharacterService'
 import { ref } from 'vue'
 
 const characterService = useCharacterService()
 
 const data = ref([])
+let filter = {}
+let page = 1
 
 loadData()
 
-async function loadData(filter) {
-  const newData = await characterService.getCharacters(filter?.name, filter?.status)
+async function loadData(filter, page) {
+  const newData = await characterService.getCharacters(filter?.name, filter?.status, page)
   data.value = newData
 }
 
-function onFilterChanged(filter) {
+function onFilterChanged(_filter) {
+  page = 1
+  filter = _filter
   loadData(filter)
 }
+
+function onPreviousPage() {
+  if (page > 1) {
+    page -= 1
+    loadData(filter, page)
+  }
+}
+
+function onNextPage() {
+  if (page < data.value.info.pages) {
+    page+= 1
+    loadData(filter, page)
+  }
+}
+
 </script>
 
 <style>
